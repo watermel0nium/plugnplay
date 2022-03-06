@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraft.entity.damage.DamageSource;
 import org.apache.logging.log4j.LogManager;
 
 import com.mojang.authlib.GameProfile;
@@ -81,45 +82,41 @@ public class ClientEventHandler {
 	}
 
 	private static int getIntensity(String type) {
-		Map<String, Integer> normal = new HashMap<>();
-		normal.put("attack", 60);
-		normal.put("hurt", 0);
-		normal.put("mine", 80);
-		normal.put("xpChange", 100);
-		normal.put("harvest", 0);
-		normal.put("vitality", 0);
-
-		Map<String, Integer> masochist = new HashMap<>();
-		masochist.put("attack", 0);
-		masochist.put("hurt", 100);
-		masochist.put("mine", 0);
-		masochist.put("xpChange", 0);
-		masochist.put("harvest", 0);
-		masochist.put("vitality", 10);
-
-		Map<String, Integer> hedonist = new HashMap<>();
-		hedonist.put("attack", 60);
-		hedonist.put("hurt", 10);
-		hedonist.put("mine", 80);
-		hedonist.put("xpChange", 100);
-		hedonist.put("harvest", 20);
-		hedonist.put("vitality", 10);
-
-		Map<String, Integer> custom = new HashMap<>();
-		custom.put("attack", MinegasmConfig.INSTANCE.attackIntensity);
-		custom.put("hurt", MinegasmConfig.INSTANCE.hurtIntensity);
-		custom.put("mine", MinegasmConfig.INSTANCE.mineIntensity);
-		custom.put("xpChange", MinegasmConfig.INSTANCE.xpChangeIntensity);
-		custom.put("harvest", MinegasmConfig.INSTANCE.harvestIntensity);
-		custom.put("vitality", MinegasmConfig.INSTANCE.vitalityIntensity);
-
 		if (GameplayMode.MASOCHIST.equals(MinegasmConfig.INSTANCE.mode)) {
+			Map<String, Integer> masochist = new HashMap<>();
+			masochist.put("attack", 0);
+			masochist.put("hurt", 100);
+			masochist.put("mine", 0);
+			masochist.put("xpChange", 0);
+			masochist.put("harvest", 0);
+			masochist.put("vitality", 100);
 			return masochist.get(type);
 		} else if (GameplayMode.HEDONIST.equals(MinegasmConfig.INSTANCE.mode)) {
+			Map<String, Integer> hedonist = new HashMap<>();
+			hedonist.put("attack", 60);
+			hedonist.put("hurt", 10);
+			hedonist.put("mine", 80);
+			hedonist.put("xpChange", 100);
+			hedonist.put("harvest", 20);
+			hedonist.put("vitality", 0);
 			return hedonist.get(type);
 		} else if (GameplayMode.CUSTOM.equals(MinegasmConfig.INSTANCE.mode)) {
+			Map<String, Integer> custom = new HashMap<>();
+			custom.put("attack", MinegasmConfig.INSTANCE.attackIntensity);
+			custom.put("hurt", MinegasmConfig.INSTANCE.hurtIntensity);
+			custom.put("mine", MinegasmConfig.INSTANCE.mineIntensity);
+			custom.put("xpChange", MinegasmConfig.INSTANCE.xpChangeIntensity);
+			custom.put("harvest", MinegasmConfig.INSTANCE.harvestIntensity);
+			custom.put("vitality", MinegasmConfig.INSTANCE.vitalityIntensity);
 			return custom.get(type);
 		} else {
+			Map<String, Integer> normal = new HashMap<>();
+			normal.put("attack", 60);
+			normal.put("hurt", 50);
+			normal.put("mine", 80);
+			normal.put("xpChange", 100);
+			normal.put("harvest", 0);
+			normal.put("vitality", 0);
 			return normal.get(type);
 		}
 	}
@@ -134,17 +131,42 @@ public class ClientEventHandler {
 		return ActionResult.PASS;
 	}
 
-	public static void onHurt(GameProfile profile) {
+	private static int vitality = 0;
+
+	public static void onHurt(GameProfile profile, DamageSource source, float amount) {
 		if (profile.getId().equals(playerID)) {
-			setState(getStateCounter(), 3, getIntensity("hurt"), true);
+
+            vitality -= amount;
+            int vitalityIntensity = 0;
+            if (vitality < 20 && vitality > 0) {
+				vitalityIntensity = getIntensity("vitality");
+                vitalityIntensity = (int)((vitalityIntensity / 100f) * vitalityIntensity * (1 - vitality / 20f));
+            }
+
+			//set intensity strength depending on damage.
+			int damageIntensity = getIntensity("hurt");
+			if (!source.isExplosive()) {
+				amount /= 4;
+				if (amount > 0.9f) {
+                    damageIntensity = (int)(0.9f * damageIntensity);
+				}
+                damageIntensity = (int)((amount * 0.9f) * damageIntensity);
+			}
+            int stateCounter = getStateCounter();
+            if (vitalityIntensity > damageIntensity) {
+                setState(stateCounter, vitalityIntensity);
+            } else {
+                setState(stateCounter, 3, damageIntensity, true);
+            }
+
 		}
 	}
 
 	public static void onPlayerTick(PlayerEntity player) {
 		GameProfile profile = player.getGameProfile();
 
-		float playerHealth = player.getHealth();
-		float playerFoodLevel = player.getHungerManager().getFoodLevel();
+		vitality = (int)player.getHealth();
+		//float playerFoodLevel = player.getHungerManager().getFoodLevel();
 
 		tickCounter = (tickCounter + 1) % (20 * (60 * TICKS_PER_SECOND)); // 20 min day cycle
 
@@ -152,13 +174,13 @@ public class ClientEventHandler {
 			if (profile.getId().equals(playerID)) {
 				int stateCounter = getStateCounter();
 
-				if (GameplayMode.MASOCHIST.equals(MinegasmConfig.INSTANCE.mode)) {
-					if (playerHealth > 0 && playerHealth <= 1) {
-						setState(stateCounter, getIntensity("vitality"));
-					}
-				} else if (playerHealth >= 20 && playerFoodLevel >= 20) {
-					setState(stateCounter, getIntensity("vitality"));
-				}
+				//set vibration based on hp% as a pow2 curve
+                if (vitality < 20 && vitality > 0) {
+                    int intensity = getIntensity("vitality");
+                    if (intensity > 0) {
+                        setState(stateCounter, (int)((intensity / 100f) * intensity * (1 - vitality / 20f)));
+                    }
+                }
 
 				double newVibrationLevel = state[stateCounter];
 				state[stateCounter] = 0;
@@ -169,10 +191,10 @@ public class ClientEventHandler {
 			}
 		}
 
-		if (tickCounter % (5 * TICKS_PER_SECOND) == 0) { // 5 secs
-			LOGGER.debug("Health: " + playerHealth);
-			LOGGER.debug("Food: " + playerFoodLevel);
-		}
+		//if (tickCounter % (5 * TICKS_PER_SECOND) == 0) { // 5 secs
+		//	LOGGER.debug("Health: " + playerHealth);
+		//	LOGGER.debug("Food: " + playerFoodLevel);
+		//}
 	}
 
 	public static void onClientTick() {

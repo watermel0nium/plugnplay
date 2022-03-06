@@ -35,44 +35,48 @@ public class MinegasmModMenu implements ModMenuApi {
 						.startEnumSelector(new LiteralText("Gameplay Mode"), GameplayMode.class,
 								MinegasmConfig.INSTANCE.mode)
 						.setDefaultValue(GameplayMode.NORMAL)
-						.setSaveConsumer(m -> MinegasmConfig.INSTANCE.mode = m)
-						.build())
-				.addEntry(entryBuild
-						.startIntSlider(new LiteralText("Attack Intensity"), MinegasmConfig.INSTANCE.attackIntensity, 0,
-								100)
-						.setDefaultValue(60)
-						.setSaveConsumer(i -> MinegasmConfig.INSTANCE.attackIntensity = i)
-						.build())
-				.addEntry(entryBuild
-						.startIntSlider(new LiteralText("Hurt Intensity"), MinegasmConfig.INSTANCE.hurtIntensity, 0,
-								100)
-						.setDefaultValue(0)
-						.setSaveConsumer(i -> MinegasmConfig.INSTANCE.hurtIntensity = i)
-						.build())
-				.addEntry(entryBuild
-						.startIntSlider(new LiteralText("Mine Intensity"), MinegasmConfig.INSTANCE.mineIntensity, 0,
-								100)
-						.setDefaultValue(60)
-						.setSaveConsumer(i -> MinegasmConfig.INSTANCE.mineIntensity = i)
-						.build())
-				.addEntry(entryBuild
-						.startIntSlider(new LiteralText("XP Changed Intensity"),
-								MinegasmConfig.INSTANCE.xpChangeIntensity, 0, 100)
-						.setDefaultValue(0)
-						.setSaveConsumer(i -> MinegasmConfig.INSTANCE.xpChangeIntensity = i)
-						.build())
-				.addEntry(entryBuild
-						.startIntSlider(new LiteralText("Harvest Intensity"), MinegasmConfig.INSTANCE.harvestIntensity,
-								0, 100)
-						.setDefaultValue(0)
-						.setSaveConsumer(i -> MinegasmConfig.INSTANCE.harvestIntensity = i)
-						.build())
-				.addEntry(entryBuild
-						.startIntSlider(new LiteralText("Vitality Intensity"),
-								MinegasmConfig.INSTANCE.vitalityIntensity, 0, 100)
-						.setDefaultValue(0)
-						.setSaveConsumer(i -> MinegasmConfig.INSTANCE.vitalityIntensity = i)
+						.setSaveConsumer(m -> {MinegasmConfig.INSTANCE.mode = m; })
 						.build());
+
+		if (MinegasmConfig.INSTANCE.mode == GameplayMode.CUSTOM) {
+			builder.getOrCreateCategory(new LiteralText("Custom Settings"))
+					.addEntry(entryBuild
+							.startIntSlider(new LiteralText("Attack Intensity"), MinegasmConfig.INSTANCE.attackIntensity, 0,
+									100)
+							.setDefaultValue(60)
+							.setSaveConsumer(i -> MinegasmConfig.INSTANCE.attackIntensity = i)
+							.build())
+					.addEntry(entryBuild
+							.startIntSlider(new LiteralText("Hurt Intensity"), MinegasmConfig.INSTANCE.hurtIntensity, 0,
+									100)
+							.setDefaultValue(0)
+							.setSaveConsumer(i -> MinegasmConfig.INSTANCE.hurtIntensity = i)
+							.build())
+					.addEntry(entryBuild
+							.startIntSlider(new LiteralText("Mine Intensity"), MinegasmConfig.INSTANCE.mineIntensity, 0,
+									100)
+							.setDefaultValue(60)
+							.setSaveConsumer(i -> MinegasmConfig.INSTANCE.mineIntensity = i)
+							.build())
+					.addEntry(entryBuild
+							.startIntSlider(new LiteralText("XP Changed Intensity"),
+									MinegasmConfig.INSTANCE.xpChangeIntensity, 0, 100)
+							.setDefaultValue(0)
+							.setSaveConsumer(i -> MinegasmConfig.INSTANCE.xpChangeIntensity = i)
+							.build())
+					.addEntry(entryBuild
+							.startIntSlider(new LiteralText("Harvest Intensity"), MinegasmConfig.INSTANCE.harvestIntensity,
+									0, 100)
+							.setDefaultValue(0)
+							.setSaveConsumer(i -> MinegasmConfig.INSTANCE.harvestIntensity = i)
+							.build())
+					.addEntry(entryBuild
+							.startIntSlider(new LiteralText("Vitality Intensity"),
+									MinegasmConfig.INSTANCE.vitalityIntensity, 0, 100)
+							.setDefaultValue(0)
+							.setSaveConsumer(i -> MinegasmConfig.INSTANCE.vitalityIntensity = i)
+							.build());
+		}
 
 		return builder.build();
 	}

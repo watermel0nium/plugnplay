@@ -21,8 +21,8 @@ public class ClientPlayerEntityMixins {
 	}
 
 	@Inject(at = @At("HEAD"), method = "damage(Lnet/minecraft/entity/damage/DamageSource;F)Z")
-	private void playerReceivedDamage(DamageSource source, float health, CallbackInfoReturnable<Boolean> ci) {
-		ClientEventHandler.onHurt(((ClientPlayerEntity) (Object) this).getGameProfile());
+	private void playerReceivedDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> ci) {
+		ClientEventHandler.onHurt(((ClientPlayerEntity) (Object) this).getGameProfile(), source, amount);
 	}
 
 	@Inject(at = @At("INVOKE"), method = "updateHealth(F)V")

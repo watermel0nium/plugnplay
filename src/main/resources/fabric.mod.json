@@ -1,11 +1,11 @@
 {
   "schemaVersion" : 1,
   "id" : "minegasm",
-  "version" : "2.0.0",
+  "version" : "2.2.0",
   "name" : "Minegasm",
-  "description" : "minegasm-fabric = Fabric + teledildonics",
+  "description" : "Minecraft have never been THIS exciting!\nPlug and play!",
   "authors" : [ "RainbowVille", "vinceh121" ],
-  "contributors" : [ ],
+  "contributors" : [ "watermel0nium" ],
   "contact" : {
     "homepage" : "https://github.com/vinceh121/minegasm-fabric",
     "sources" : "https://github.com/vinceh121/minegasm-fabric"
