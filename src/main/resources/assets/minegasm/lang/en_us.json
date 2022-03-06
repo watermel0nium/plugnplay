@@ -1,16 +1,18 @@
 {
-	"gui.minegasm.config.vibrate": "Vibrate",
+	"gui.plugnplay.config.vibrate": "Vibrate",
 
-	"gui.minegasm.config.mode": "Mode",
-	"gui.minegasm.config.mode.normal": "Normal",
-	"gui.minegasm.config.mode.masochist": "Masochist",
-	"gui.minegasm.config.mode.hedonist": "Hedonist",
-	"gui.minegasm.config.mode.custom": "Custom",
+	"gui.plugnplay.config.mode": "Mode",
+	"gui.plugnplay.config.mode.normal": "Normal",
+	"gui.plugnplay.config.mode.masochist": "Masochist",
+	"gui.plugnplay.config.mode.hedonist": "Hedonist",
+	"gui.plugnplay.config.mode.custom": "Custom",
 
-	"gui.minegasm.config.intensity.attack": "Attack",
-	"gui.minegasm.config.intensity.hurt": "Hurt",
-	"gui.minegasm.config.intensity.mine": "Mine",
-	"gui.minegasm.config.intensity.xp": "XP",
-	"gui.minegasm.config.intensity.harvest": "Harvest",
-	"gui.minegasm.config.intensity.vitality": "Vitality"
+	"gui.plugnplay.config.intensity.attack": "Attack",
+	"gui.plugnplay.config.intensity.hurt": "Hurt",
+	"gui.plugnplay.config.intensity.mine": "Mine",
+	"gui.plugnplay.config.intensity.xp": "XP",
+	"gui.plugnplay.config.intensity.harvest": "Harvest",
+	"gui.plugnplay.config.intensity.vitality": "Vitality",
+
+	"message.plugnplay.connection_attempt": "Attempting to connect toy..."
 }

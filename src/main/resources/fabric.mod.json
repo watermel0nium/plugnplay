@@ -1,30 +1,33 @@
 {
   "schemaVersion" : 1,
-  "id" : "minegasm",
-  "version" : "2.2.0",
-  "name" : "Minegasm",
+  "id" : "plugnplay",
+  "version" : "0.0.1",
+  "name" : "Plug n' Play",
   "description" : "Minecraft have never been THIS exciting!\nPlug and play!",
   "authors" : [ "RainbowVille", "vinceh121" ],
-  "contributors" : [ "watermel0nium" ],
+  "contributors" : [ "watermel0nium", "profjb58" ],
   "contact" : {
-    "homepage" : "https://github.com/vinceh121/minegasm-fabric",
-    "sources" : "https://github.com/vinceh121/minegasm-fabric"
+    "homepage" : "https://github.com/watermel0nium/Minegasm-fabric",
+    "sources" : "hhttps://github.com/watermel0nium/Minegasm-fabric"
   },
   "license" : "AGPL-3.0",
   "icon" : "assets/minegasm/icon.png",
   "environment" : "*",
   "entrypoints" : {
-    "main" : [ "com.therainbowville.minegasm.common.Minegasm" ],
+    "main" : [
+      "io.github.watermel0nium.PlugnPlay"
+    ],
     "client" : [ ],
-    "server" : [ ],
-    "modmenu": [ "com.therainbowville.minegasm.config.MinegasmModMenu" ]
+    "server" : [ ]
   },
-  "mixins" : [ "minegasm.mixins.json" ],
+  "mixins" : [
+    "plugnplay.mixins.json"
+  ],
   "depends" : {
     "fabricloader" : ">=0.11.7",
     "fabric": "*",
     "minecraft": ">=1.18",
-    "java": ">=11",
+    "java": ">=17",
     "modmenu": "3.x.x"
   }
 }
