@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.HitResult;
 import org.apache.logging.log4j.LogManager;
@@ -60,6 +61,7 @@ public class ClientEventHandler {
 		masochist.put("harvest", 100);
 		masochist.put("vitality", 100);
 		masochist.put("sprinting", 20);
+		masochist.put("place", 0);
 
 		hedonist.put("attack", 70);
 		hedonist.put("hurt", 10);
@@ -68,6 +70,7 @@ public class ClientEventHandler {
 		hedonist.put("harvest", 00);
 		hedonist.put("vitality", 0);
 		hedonist.put("sprinting", 0);
+		hedonist.put("place", 0);
 
 		normal.put("attack", 40);
 		normal.put("hurt", 50);
@@ -76,6 +79,7 @@ public class ClientEventHandler {
 		normal.put("harvest", 100);
 		normal.put("vitality", 50);
 		normal.put("sprinting", 0);
+		hedonist.put("place", 100);
 
 		reloadCustom();
 	}
@@ -89,6 +93,7 @@ public class ClientEventHandler {
 		custom.put("harvest", MinegasmConfig.INSTANCE.harvestIntensity);
 		custom.put("vitality", MinegasmConfig.INSTANCE.vitalityIntensity);
 		custom.put("sprinting", MinegasmConfig.INSTANCE.sprintIntensity);
+		custom.put("place", MinegasmConfig.INSTANCE.placeIntensity);
 	}
 
 	private static int getStateCounter() {
@@ -267,7 +272,7 @@ public class ClientEventHandler {
 			Block block = blockState.getBlock();
 			// ToolType. AXE, HOE, PICKAXE, SHOVEL
 
-			float blockHardness = block.getDefaultState().getHardness(null, null);
+			float blockHardness = block.getHardness();
 			// LOGGER.debug("Harvest: tool: "
 			// + block.getHarvestTool(blockState)
 			// + " can harvest? "
@@ -276,7 +281,7 @@ public class ClientEventHandler {
 			// + blockHardness);
 
 			int intensity
-					= Math.toIntExact(Math.round((getIntensity("harvest") / 100.0 * (blockHardness / 50.0)) * 100));
+					= Math.toIntExact(Math.round((getIntensity("harvest") * (blockHardness / 50f))));
 
 			if (canHarvest) {
 				setState(getStateCounter(), 2, intensity, false);
@@ -367,5 +372,11 @@ public class ClientEventHandler {
 
 	private static void setSprintVibrations() {
 		setState(getStateCounter(), 1, getIntensity("sprinting"), true);
+	}
+
+	public static void onPlace(ItemPlacementContext context, BlockState state) {
+		if (context.getPlayer().getGameProfile().getId().equals(playerID)) {
+			setState(getStateCounter(), 1, (int) (getIntensity("place") * (state.getBlock().getHardness() / 70f + 0.29f)), true);
+		}
 	}
 }

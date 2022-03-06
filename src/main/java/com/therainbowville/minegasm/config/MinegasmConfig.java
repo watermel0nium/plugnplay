@@ -29,6 +29,7 @@ public class MinegasmConfig {
 	public int harvestIntensity = 100;
 	public int vitalityIntensity = 50;
 	public int sprintIntensity = 0;
+	public int placeIntensity = 100;
 
 	private static File getConfigFile() {
 		return FabricLoader.getInstance().getConfigDir().resolve("minegasm-fabric.json").toFile();
@@ -80,6 +81,8 @@ public class MinegasmConfig {
 				+ vitalityIntensity
 				+ ", sprintIntensity="
 				+ sprintIntensity
+				+ ", placeIntensity="
+				+ placeIntensity
 				+ "]";
 	}
 }

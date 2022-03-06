@@ -73,6 +73,7 @@ public class MinegasmModMenu implements ModMenuApi {
                                 0, 100)
                         .setDefaultValue(100)
                         .setSaveConsumer(i -> MinegasmConfig.INSTANCE.harvestIntensity = i)
+                        .setTooltip(new LiteralText("Set multiplier for vibrations when breaking blocks. (Multiplied with block hardness)"))
                         .build())
                 .addEntry(entryBuild
                         .startIntSlider(new LiteralText("Vitality Intensity"),
@@ -87,6 +88,13 @@ public class MinegasmModMenu implements ModMenuApi {
                         .setDefaultValue(0)
                         .setSaveConsumer(i -> MinegasmConfig.INSTANCE.sprintIntensity = i)
                         .setTooltip(new LiteralText("Set amount of vibrations during spiriting."))
+                        .build())
+                .addEntry(entryBuild
+                        .startIntSlider(new LiteralText("Sprinting Intensity"),
+                                MinegasmConfig.INSTANCE.placeIntensity, 0, 100)
+                        .setDefaultValue(100)
+                        .setSaveConsumer(i -> MinegasmConfig.INSTANCE.placeIntensity = i)
+                        .setTooltip(new LiteralText("Set multiplier for vibrations when placing blocks. (Multiplied with block hardness)"))
                         .build());
         //}
 
