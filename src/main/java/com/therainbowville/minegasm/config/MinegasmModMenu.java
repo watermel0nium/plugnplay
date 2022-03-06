@@ -45,21 +45,21 @@ public class MinegasmModMenu implements ModMenuApi {
                 .addEntry(entryBuild
                         .startIntSlider(new LiteralText("Attack Intensity"), MinegasmConfig.INSTANCE.attackIntensity, 0,
                                 100)
-                        .setDefaultValue(60)
+                        .setDefaultValue(50)
                         .setSaveConsumer(i -> MinegasmConfig.INSTANCE.attackIntensity = i)
                         .setTooltip(new LiteralText("Set multiplier for vibrations for you attack a entity."))
                         .build())
                 .addEntry(entryBuild
                         .startIntSlider(new LiteralText("Hurt Intensity"), MinegasmConfig.INSTANCE.hurtIntensity, 0,
                                 100)
-                        .setDefaultValue(0)
+                        .setDefaultValue(50)
                         .setSaveConsumer(i -> MinegasmConfig.INSTANCE.hurtIntensity = i)
                         .setTooltip(new LiteralText("Set multiplier for vibrations for taken damage.\nVibrates more based on damage. (max at 2 hearts) unless the damage source is an explosion."))
                         .build())
                 .addEntry(entryBuild
                         .startIntSlider(new LiteralText("Mine Intensity"), MinegasmConfig.INSTANCE.mineIntensity, 0,
                                 100)
-                        .setDefaultValue(60)
+                        .setDefaultValue(0)
                         .setSaveConsumer(i -> MinegasmConfig.INSTANCE.mineIntensity = i)
                         .build())
                 .addEntry(entryBuild
@@ -71,15 +71,22 @@ public class MinegasmModMenu implements ModMenuApi {
                 .addEntry(entryBuild
                         .startIntSlider(new LiteralText("Harvest Intensity"), MinegasmConfig.INSTANCE.harvestIntensity,
                                 0, 100)
-                        .setDefaultValue(0)
+                        .setDefaultValue(100)
                         .setSaveConsumer(i -> MinegasmConfig.INSTANCE.harvestIntensity = i)
                         .build())
                 .addEntry(entryBuild
                         .startIntSlider(new LiteralText("Vitality Intensity"),
                                 MinegasmConfig.INSTANCE.vitalityIntensity, 0, 100)
-                        .setDefaultValue(0)
+                        .setDefaultValue(50)
                         .setSaveConsumer(i -> MinegasmConfig.INSTANCE.vitalityIntensity = i)
                         .setTooltip(new LiteralText("Set multiplier for vibrations for when heath is missing."))
+                        .build())
+                .addEntry(entryBuild
+                        .startIntSlider(new LiteralText("Sprinting Intensity"),
+                                MinegasmConfig.INSTANCE.sprintIntensity, 0, 100)
+                        .setDefaultValue(0)
+                        .setSaveConsumer(i -> MinegasmConfig.INSTANCE.sprintIntensity = i)
+                        .setTooltip(new LiteralText("Set amount of vibrations during spiriting."))
                         .build());
         //}
 

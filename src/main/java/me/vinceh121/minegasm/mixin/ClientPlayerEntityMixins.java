@@ -14,10 +14,22 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 
 @Mixin(ClientPlayerEntity.class)
-public class ClientPlayerEntityMixins {
+public abstract class ClientPlayerEntityMixins {
 
 	@Shadow
 	public boolean healthInitialized;
+
+	@Shadow protected abstract boolean isWalking();
+
+	@Shadow public abstract boolean isHoldingOntoLadder();
+
+	@Shadow public abstract boolean isRiding();
+
+	@Shadow public abstract boolean isSneaking();
+
+	@Shadow public abstract boolean isSubmergedInWater();
+
+	@Shadow private boolean inSneakingPose;
 
 	@Inject(at = @At("HEAD"), method = "setExperience(FII)V")
 	private void onXpAdded(float progress, int total, int level, CallbackInfo ci) {
@@ -41,5 +53,10 @@ public class ClientPlayerEntityMixins {
 	private void onRespawn(CallbackInfo ci) {
 		System.out.println("respawn owo");
 		ClientEventHandler.onRespawn();
+	}
+
+	@Inject(at = @At("HEAD"), method = "setSprinting")
+	private void setSprinting(boolean sprinting, CallbackInfo ci) {
+		ClientEventHandler.sprintingChanged(sprinting && (!inSneakingPose || isHoldingOntoLadder() || isRiding() || isSubmergedInWater()));
 	}
 }

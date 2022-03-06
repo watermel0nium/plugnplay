@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.fabricmc.loader.api.FabricLoader;
 
+import static com.therainbowville.minegasm.client.ClientEventHandler.reloadCustom;
+
 public class MinegasmConfig {
 	private static final ObjectMapper MAPPER = new ObjectMapper();;
 	private static final Logger LOGGER = LogManager.getLogger(MinegasmConfig.class);
@@ -20,12 +22,13 @@ public class MinegasmConfig {
 
 	public boolean vibrate = true;
 	public GameplayMode mode = GameplayMode.NORMAL;
-	public int attackIntensity = 60;
-	public int hurtIntensity = 0;
-	public int mineIntensity = 60;
+	public int attackIntensity = 50;
+	public int hurtIntensity = 80;
+	public int mineIntensity = 0;
 	public int xpChangeIntensity = 0;
-	public int harvestIntensity = 0;
-	public int vitalityIntensity = 0;
+	public int harvestIntensity = 100;
+	public int vitalityIntensity = 50;
+	public int sprintIntensity = 0;
 
 	private static File getConfigFile() {
 		return FabricLoader.getInstance().getConfigDir().resolve("minegasm-fabric.json").toFile();
@@ -49,6 +52,7 @@ public class MinegasmConfig {
 		File config = getConfigFile();
 		try (FileOutputStream out = new FileOutputStream(config)) {
 			MAPPER.writeValue(out, INSTANCE);
+			reloadCustom();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -74,6 +78,8 @@ public class MinegasmConfig {
 				+ harvestIntensity
 				+ ", vitalityIntensity="
 				+ vitalityIntensity
+				+ ", sprintIntensity="
+				+ sprintIntensity
 				+ "]";
 	}
 }

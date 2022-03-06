@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.hit.HitResult;
 import org.apache.logging.log4j.LogManager;
 
 import com.mojang.authlib.GameProfile;
@@ -24,6 +26,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class ClientEventHandler {
 	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
@@ -42,6 +45,50 @@ public class ClientEventHandler {
 		clientTickCounter = -1;
 		Arrays.fill(state, 0);
 		paused = false;
+	}
+
+	private static Map<String, Integer> masochist = new HashMap<>();
+	private static Map<String, Integer> hedonist = new HashMap<>();
+	private static Map<String, Integer> normal = new HashMap<>();
+	private static Map<String, Integer> custom = new HashMap<>();
+
+	public static void BuildHashMaps() {
+		masochist.put("attack", 0);
+		masochist.put("hurt", 100);
+		masochist.put("mine", 0);
+		masochist.put("xpChange", 0);
+		masochist.put("harvest", 100);
+		masochist.put("vitality", 100);
+		masochist.put("sprinting", 20);
+
+		hedonist.put("attack", 70);
+		hedonist.put("hurt", 10);
+		hedonist.put("mine", 00);
+		hedonist.put("xpChange", 100);
+		hedonist.put("harvest", 00);
+		hedonist.put("vitality", 0);
+		hedonist.put("sprinting", 0);
+
+		normal.put("attack", 40);
+		normal.put("hurt", 50);
+		normal.put("mine", 0);
+		normal.put("xpChange", 0);
+		normal.put("harvest", 100);
+		normal.put("vitality", 50);
+		normal.put("sprinting", 0);
+
+		reloadCustom();
+	}
+
+	public static void reloadCustom() {
+		custom = new HashMap<>();
+		custom.put("attack", MinegasmConfig.INSTANCE.attackIntensity);
+		custom.put("hurt", MinegasmConfig.INSTANCE.hurtIntensity);
+		custom.put("mine", MinegasmConfig.INSTANCE.mineIntensity);
+		custom.put("xpChange", MinegasmConfig.INSTANCE.xpChangeIntensity);
+		custom.put("harvest", MinegasmConfig.INSTANCE.harvestIntensity);
+		custom.put("vitality", MinegasmConfig.INSTANCE.vitalityIntensity);
+		custom.put("sprinting", MinegasmConfig.INSTANCE.sprintIntensity);
 	}
 
 	private static int getStateCounter() {
@@ -82,47 +129,19 @@ public class ClientEventHandler {
 	}
 
 	private static int getIntensity(String type) {
-		if (GameplayMode.MASOCHIST.equals(MinegasmConfig.INSTANCE.mode)) {
-			Map<String, Integer> masochist = new HashMap<>();
-			masochist.put("attack", 0);
-			masochist.put("hurt", 100);
-			masochist.put("mine", 0);
-			masochist.put("xpChange", 0);
-			masochist.put("harvest", 0);
-			masochist.put("vitality", 100);
-			return masochist.get(type);
-		} else if (GameplayMode.HEDONIST.equals(MinegasmConfig.INSTANCE.mode)) {
-			Map<String, Integer> hedonist = new HashMap<>();
-			hedonist.put("attack", 60);
-			hedonist.put("hurt", 10);
-			hedonist.put("mine", 80);
-			hedonist.put("xpChange", 100);
-			hedonist.put("harvest", 20);
-			hedonist.put("vitality", 0);
-			return hedonist.get(type);
-		} else if (GameplayMode.CUSTOM.equals(MinegasmConfig.INSTANCE.mode)) {
-			Map<String, Integer> custom = new HashMap<>();
-			custom.put("attack", MinegasmConfig.INSTANCE.attackIntensity);
-			custom.put("hurt", MinegasmConfig.INSTANCE.hurtIntensity);
-			custom.put("mine", MinegasmConfig.INSTANCE.mineIntensity);
-			custom.put("xpChange", MinegasmConfig.INSTANCE.xpChangeIntensity);
-			custom.put("harvest", MinegasmConfig.INSTANCE.harvestIntensity);
-			custom.put("vitality", MinegasmConfig.INSTANCE.vitalityIntensity);
-			return custom.get(type);
-		} else {
-			Map<String, Integer> normal = new HashMap<>();
-			normal.put("attack", 60);
-			normal.put("hurt", 50);
-			normal.put("mine", 80);
-			normal.put("xpChange", 100);
-			normal.put("harvest", 0);
-			normal.put("vitality", 0);
-			return normal.get(type);
+		switch (MinegasmConfig.INSTANCE.mode) {
+			case CUSTOM:
+				return custom.get(type);
+			case HEDONIST:
+				return hedonist.get(type);
+			case MASOCHIST:
+				return masochist.get(type);
 		}
+		return normal.get(type);
 	}
 
 	public static ActionResult onAttack(PlayerEntity player, World world, Hand hand, Entity entity,
-			EntityHitResult hitResult) {
+										EntityHitResult hitResult) {
 		GameProfile profile = player.getGameProfile();
 
 		if (profile.getId().equals(playerID)) {
@@ -136,28 +155,28 @@ public class ClientEventHandler {
 	public static void onHurt(GameProfile profile, DamageSource source, float amount) {
 		if (profile.getId().equals(playerID)) {
 
-            vitality -= amount;
-            int vitalityIntensity = 0;
-            if (vitality < 20 && vitality > 0) {
+			vitality -= amount;
+			int vitalityIntensity = 0;
+			if (vitality < 20 && vitality > 0) {
 				vitalityIntensity = getIntensity("vitality");
-                vitalityIntensity = (int)((vitalityIntensity / 100f) * vitalityIntensity * (1 - vitality / 20f));
-            }
+				vitalityIntensity = (int) ((vitalityIntensity / 100f) * vitalityIntensity * (1 - vitality / 20f));
+			}
 
 			//set intensity strength depending on damage.
 			int damageIntensity = getIntensity("hurt");
 			if (!source.isExplosive()) {
 				amount /= 4;
 				if (amount > 0.9f) {
-                    damageIntensity = (int)(0.9f * damageIntensity);
+					damageIntensity = (int) (0.9f * damageIntensity);
 				}
-                damageIntensity = (int)((amount * 0.9f) * damageIntensity);
+				damageIntensity = (int) ((amount * 0.9f) * damageIntensity);
 			}
-            int stateCounter = getStateCounter();
-            if (vitalityIntensity > damageIntensity) {
-                setState(stateCounter, vitalityIntensity);
-            } else {
-                setState(stateCounter, 3, damageIntensity, true);
-            }
+			int stateCounter = getStateCounter();
+			if (vitalityIntensity > damageIntensity) {
+				setState(stateCounter, vitalityIntensity);
+			} else {
+				setState(stateCounter, 3, damageIntensity, true);
+			}
 
 		}
 	}
@@ -165,7 +184,7 @@ public class ClientEventHandler {
 	public static void onPlayerTick(PlayerEntity player) {
 		GameProfile profile = player.getGameProfile();
 
-		vitality = (int)player.getHealth();
+		vitality = (int) player.getHealth();
 		//float playerFoodLevel = player.getHungerManager().getFoodLevel();
 
 		tickCounter = (tickCounter + 1) % (20 * (60 * TICKS_PER_SECOND)); // 20 min day cycle
@@ -175,12 +194,12 @@ public class ClientEventHandler {
 				int stateCounter = getStateCounter();
 
 				//set vibration based on hp% as a pow2 curve
-                if (vitality < 20 && vitality > 0) {
-                    int intensity = getIntensity("vitality");
-                    if (intensity > 0) {
-                        setState(stateCounter, (int)((intensity / 100f) * intensity * (1 - vitality / 20f)));
-                    }
-                }
+				if (vitality < 20 && vitality > 0) {
+					int intensity = getIntensity("vitality");
+					if (intensity > 0) {
+						setState(stateCounter, (int) ((intensity / 100f) * intensity * (1 - vitality / 20f)));
+					}
+				}
 
 				double newVibrationLevel = state[stateCounter];
 				state[stateCounter] = 0;
@@ -189,6 +208,9 @@ public class ClientEventHandler {
 
 				ToyController.setVibrationLevel(newVibrationLevel);
 			}
+		}
+		if (isSprinting && (tickCounter % TICKS_PER_SECOND) == 0) {
+			setSprintVibrations();
 		}
 
 		//if (tickCounter % (5 * TICKS_PER_SECOND) == 0) { // 5 secs
@@ -221,6 +243,7 @@ public class ClientEventHandler {
 		playerName = profile.getName();
 		playerID = profile.getId();
 		LOGGER.info("Current player: " + playerName + " " + playerID.toString());
+		BuildHashMaps();
 	}
 
 	public static void onWorldLoaded(World world) {
@@ -333,4 +356,16 @@ public class ClientEventHandler {
 		}
 	}
 
+	private static boolean isSprinting;
+
+	public static void sprintingChanged(boolean sprinting) {
+		isSprinting = sprinting && getIntensity("sprinting") > 0;
+		if (isSprinting) {
+			setSprintVibrations();
+		}
+	}
+
+	private static void setSprintVibrations() {
+		setState(getStateCounter(), 1, getIntensity("sprinting"), true);
+	}
 }
