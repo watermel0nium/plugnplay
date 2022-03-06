@@ -80,23 +80,18 @@ public class PlugClientManager {
                 client.Connect(new URI("ws://" + ip + ":12345/buttplug"), true);
                 client.startScanning();
 
-                int attempts = 0;
-                boolean devicesFound = true;
-                while(client.getDevices().size() == 0) {
-                    client.startScanning();
-                    Thread.sleep(2000);
-                    if(attempts >= CONNECTION_ATTEMPTS) {
-                        player.sendMessage(new LiteralText("Could not find any connected toys"), false);
-                        devicesFound = false;
-                        break;
-                    }
-                    attempts++;
+                Thread.sleep(2000);
+                client.requestDeviceList();
+                Thread.sleep(2000);
+
+                var devices = client.getDevices();
+                if(devices.isEmpty())
+                    player.sendMessage(new LiteralText("Could not find any connected toys"), false);
+                else {
+                    String msg = "Found a toy: " + devices.get(0).getName();
+                    player.sendMessage(new LiteralText(msg), false);
                 }
-                if(devicesFound) {
-                    // Debug message
-                    player.sendMessage(new LiteralText("Found a toy!"), false);
-                    clients.put(player.getUuid(), client);
-                }
+                clients.put(player.getUuid(), client);
             }
         } catch (Exception e) {
             PlugnPlay.LOGGER.error(e.getMessage());
