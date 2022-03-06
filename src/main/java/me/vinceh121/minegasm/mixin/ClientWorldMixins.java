@@ -2,6 +2,7 @@ package me.vinceh121.minegasm.mixin;
 
 import java.util.function.Supplier;
 
+import net.minecraft.util.registry.RegistryEntry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,9 +23,7 @@ import net.minecraft.world.dimension.DimensionType;
 @Mixin(ClientWorld.class)
 public class ClientWorldMixins {
 	@Inject(at = @At("TAIL"), method = "<init>")
-	public void onWorldLoad(ClientPlayNetworkHandler netHandler, ClientWorld.Properties properties,
-			RegistryKey<World> registryRef, DimensionType dimensionType, int loadDistance, int simulationDistance,
-			Supplier<Profiler> profiler, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci) {
+	public void onWorldLoad(ClientPlayNetworkHandler netHandler, ClientWorld.Properties properties, RegistryKey registryRef, RegistryEntry registryEntry, int loadDistance, int simulationDistance, Supplier profiler, WorldRenderer worldRenderer, boolean debugWorld, long seed, CallbackInfo ci) {
 		ClientEventHandler.onWorldLoaded((World) (Object) this);
 	}
 

@@ -1,6 +1,7 @@
 package me.vinceh121.minegasm.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -14,6 +15,10 @@ import net.minecraft.entity.player.PlayerEntity;
 
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayerEntityMixins {
+
+	@Shadow
+	public boolean healthInitialized;
+
 	@Inject(at = @At("HEAD"), method = "setExperience(FII)V")
 	private void onXpAdded(float progress, int total, int level, CallbackInfo ci) {
 		ClientPlayerEntity thos = (ClientPlayerEntity) (Object) this;
@@ -25,9 +30,9 @@ public class ClientPlayerEntityMixins {
 		ClientEventHandler.onHurt(((ClientPlayerEntity) (Object) this).getGameProfile(), source, amount);
 	}
 
-	@Inject(at = @At("INVOKE"), method = "updateHealth(F)V")
+	@Inject(at = @At("HEAD"), method = "updateHealth(F)V")
 	private void onGoCommitDie(float health, CallbackInfo ci) {
-		if (health == 0) {
+		if (this.healthInitialized && health == 0) {
 			ClientEventHandler.onDeath((PlayerEntity) (Object) this);
 		}
 	}
