@@ -1,14 +1,15 @@
 {
   "schemaVersion" : 1,
-  "id" : "minegasm",
+  "id" : "plugnplay",
   "version" : "2.2.0",
-  "name" : "Minegasm",
-  "description" : "Minecraft have never been THIS exciting!\nPlug and play!",
+  "name" : "Plug n' Play",
+  "description" : "Minecraft have never been THIS exciting!\nPlug and play!\n\nPlug n' play is a Minecraft fabric mod for controlling vibes",
   "authors" : [ "RainbowVille", "vinceh121" ],
-  "contributors" : [ "watermel0nium" ],
+  "contributors" : [ "watermel0nium", "profjb58" ],
   "contact" : {
-    "homepage" : "https://github.com/vinceh121/minegasm-fabric",
-    "sources" : "https://github.com/vinceh121/minegasm-fabric"
+    "homepage" : "https://github.com/watermel0nium/Minegasm-fabric",
+    "sources" : "https://github.com/watermel0nium/Minegasm-fabric",
+    "issues": "https://github.com/vinceh121/Minegasm-fabric/issues"
   },
   "license" : "AGPL-3.0",
   "icon" : "assets/minegasm/icon.png",
