@@ -1,7 +1,7 @@
 {
   "schemaVersion" : 1,
   "id" : "plugnplay",
-  "version" : "2.2.0",
+  "version" : "1.0.0",
   "name" : "Plug n' Play",
   "description" : "Minecraft have never been THIS exciting!\nPlug and play!\n\nPlug n' play is a Minecraft fabric mod for controlling vibes",
   "authors" : [ "RainbowVille", "vinceh121" ],
