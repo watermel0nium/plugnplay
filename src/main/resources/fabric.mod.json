@@ -4,8 +4,8 @@
   "version" : "1.0.0",
   "name" : "Plug n' Play",
   "description" : "Minecraft have never been THIS exciting!\nPlug and play!\n\nPlug n' play is a Minecraft fabric mod for controlling vibes",
-  "authors" : [ "RainbowVille", "vinceh121" ],
-  "contributors" : [ "watermel0nium", "profjb58" ],
+  "authors" : [ "watermel0nium", "profjb58" ],
+  "contributors" : [ "RainbowVille", "vinceh121" ],
   "contact" : {
     "homepage" : "https://github.com/watermel0nium/Minegasm-fabric",
     "sources" : "https://github.com/watermel0nium/Minegasm-fabric",
