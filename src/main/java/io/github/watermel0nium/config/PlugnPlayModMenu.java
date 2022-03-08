@@ -36,16 +36,9 @@ public class PlugnPlayModMenu implements ModMenuApi {
                         .build())
                 .addEntry(configEntryBuilder
                         .startEnumSelector(new LiteralText("Gameplay Mode"), GameplayMode.class,
-                                config.mode)
+                                config.getMode())
                         .setDefaultValue(GameplayMode.NORMAL)
-                        .setSaveConsumer(mode -> {
-                            config.mode = mode;
-                            switch(mode) {
-                                case NORMAL -> config.setIntensities(Intensities.NORMAL);
-                                case MASOCHIST -> config.setIntensities(Intensities.MASOCHIST);
-                                case HEDONIST -> config.setIntensities(Intensities.HEDONIST);
-                            }
-                        })
+                        .setSaveConsumer(m ->  config.setMode(m))
                         .build());
 
         builder.getOrCreateCategory(new LiteralText("Custom"))

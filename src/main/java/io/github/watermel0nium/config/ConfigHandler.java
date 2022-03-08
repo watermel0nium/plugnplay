@@ -14,15 +14,16 @@ public class ConfigHandler {
 	public static ConfigFile config;
 
 	public static void load() {
-		if(!getConfigFile().exists()) {
-			config = new ConfigFile();
-			return;
+		if(!getConfigFile().exists()) config = new ConfigFile();
+		else {
+			try (FileInputStream in = new FileInputStream(getConfigFile())) {
+				config = MAPPER.readValue(in, ConfigFile.class);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		try (FileInputStream in = new FileInputStream(getConfigFile())) {
-			config = MAPPER.readValue(in, ConfigFile.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		config.setMode(config.mode);
 	}
 
 	public static void save() {
@@ -77,7 +78,7 @@ public class ConfigHandler {
 	public static class ConfigFile {
 		public String serverURL;
 		public boolean vibrate;
-		GameplayMode mode;
+		private GameplayMode mode;
 		public int attackIntensity, hurtIntensity, mineIntensity, xpChangeIntensity, harvestIntensity, vitalityIntensity, sprintingIntensity, placeBlockIntensity;
 
 		public ConfigFile() {
@@ -97,5 +98,15 @@ public class ConfigHandler {
 			sprintingIntensity = intensities.sprinting();
 			placeBlockIntensity = intensities.placeBlock();
 		}
+
+		void setMode(GameplayMode mode) {
+			this.mode = mode;
+			switch(mode) {
+				case NORMAL -> setIntensities(Intensities.NORMAL);
+				case MASOCHIST -> setIntensities(Intensities.MASOCHIST);
+				case HEDONIST -> setIntensities(Intensities.HEDONIST);
+			}
+		}
+		public GameplayMode getMode() { return this.mode; }
 	}
 }
