@@ -12,5 +12,7 @@
 	"gui.minegasm.config.intensity.mine": "Mine",
 	"gui.minegasm.config.intensity.xp": "XP",
 	"gui.minegasm.config.intensity.harvest": "Harvest",
-	"gui.minegasm.config.intensity.vitality": "Vitality"
+	"gui.minegasm.config.intensity.vitality": "Vitality",
+
+
 }

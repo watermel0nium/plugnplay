@@ -13,19 +13,23 @@
   },
   "license" : "AGPL-3.0",
   "icon" : "assets/minegasm/icon.png",
-  "environment" : "*",
+  "environment" : "client",
   "entrypoints" : {
-    "main" : [ "com.therainbowville.minegasm.common.Minegasm" ],
-    "client" : [ ],
+    "main" : [ ],
+    "client" : [
+      "io.github.watermel0nium.PlugnPlay"
+    ],
     "server" : [ ],
-    "modmenu": [ "com.therainbowville.minegasm.config.MinegasmModMenu" ]
+    "modmenu": [
+      "io.github.watermel0nium.config.PlugnPlayModMenu"
+    ]
   },
   "mixins" : [ "minegasm.mixins.json" ],
   "depends" : {
     "fabricloader" : ">=0.11.7",
     "fabric": "*",
     "minecraft": ">=1.18",
-    "java": ">=11",
+    "java": ">=17",
     "modmenu": "3.x.x"
   }
 }

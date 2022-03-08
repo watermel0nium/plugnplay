@@ -1,16 +1,14 @@
 {
   "required": true,
-  "package": "me.vinceh121.minegasm.mixin",
+  "package": "io.github.watermel0nium.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
-	"PlayerPlaceBlock"
-  ],
+  "mixins": [],
   "client": [
-	"ClientPlayerEntityMixins",
-	"ClientPlayerInteractionManagerMixins",
-	"ClientWorldMixins",
-	"MinecraftClientMixins",
-	"PlayerEntityMixins"
+    "ClientPlayerEntityMixins",
+    "ClientPlayerInteractionManagerMixins",
+    "ClientWorldMixins",
+    "PlayerEntityMixins",
+    "PlayerPlaceBlock"
   ],
   "server": [],
   "injectors": {

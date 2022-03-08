@@ -1,8 +1,7 @@
-package me.vinceh121.minegasm.mixin;
+package io.github.watermel0nium.mixin;
 
-import com.therainbowville.minegasm.client.ClientEventHandler;
+import io.github.watermel0nium.ClientEventHandler;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import org.spongepowered.asm.mixin.Mixin;
