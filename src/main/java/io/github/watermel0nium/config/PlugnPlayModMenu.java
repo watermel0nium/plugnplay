@@ -45,54 +45,54 @@ public class PlugnPlayModMenu implements ModMenuApi {
                 .addEntry(configEntryBuilder
                         .startIntSlider(new LiteralText("Attack Intensity"), config.attackIntensity, 0,
                                 100)
-                        .setDefaultValue(50)
+                        .setDefaultValue(Intensities.NORMAL.attack())
                         .setSaveConsumer(ai -> config.attackIntensity = ai)
                         .setTooltip(new LiteralText("Set multiplier for vibrations for you attack a entity."))
                         .build())
                 .addEntry(configEntryBuilder
                         .startIntSlider(new LiteralText("Hurt Intensity"), config.hurtIntensity, 0,
                                 100)
-                        .setDefaultValue(50)
+                        .setDefaultValue(Intensities.NORMAL.hurt())
                         .setSaveConsumer(hi -> config.hurtIntensity = hi)
                         .setTooltip(new LiteralText("Set multiplier for vibrations for taken damage.\nVibrates more based on damage. (max at 2 hearts) unless the damage source is an explosion."))
                         .build())
                 .addEntry(configEntryBuilder
                         .startIntSlider(new LiteralText("Mine Intensity"), config.mineIntensity, 0,
                                 100)
-                        .setDefaultValue(0)
+                        .setDefaultValue(Intensities.NORMAL.mine())
                         .setSaveConsumer(mi -> config.mineIntensity = mi)
                         .build())
                 .addEntry(configEntryBuilder
                         .startIntSlider(new LiteralText("XP Changed Intensity"),
                                 config.xpChangeIntensity, 0, 100)
-                        .setDefaultValue(0)
+                        .setDefaultValue(Intensities.NORMAL.xpChange())
                         .setSaveConsumer(xci -> config.xpChangeIntensity = xci)
                         .build())
                 .addEntry(configEntryBuilder
                         .startIntSlider(new LiteralText("Harvest Intensity"), config.harvestIntensity,
                                 0, 100)
-                        .setDefaultValue(100)
+                        .setDefaultValue(Intensities.NORMAL.harvest())
                         .setSaveConsumer(hi -> config.harvestIntensity = hi)
                         .setTooltip(new LiteralText("Set multiplier for vibrations when breaking blocks. (Multiplied with block hardness)"))
                         .build())
                 .addEntry(configEntryBuilder
                         .startIntSlider(new LiteralText("Vitality Intensity"),
                                 config.vitalityIntensity, 0, 100)
-                        .setDefaultValue(50)
+                        .setDefaultValue(Intensities.NORMAL.vitality())
                         .setSaveConsumer(vi -> config.vitalityIntensity = vi)
                         .setTooltip(new LiteralText("Set multiplier for vibrations for when heath is missing."))
                         .build())
                 .addEntry(configEntryBuilder
                         .startIntSlider(new LiteralText("Sprinting Intensity"),
                                 config.sprintingIntensity, 0, 100)
-                        .setDefaultValue(0)
+                        .setDefaultValue(Intensities.NORMAL.sprinting())
                         .setSaveConsumer(si -> config.sprintingIntensity = si)
                         .setTooltip(new LiteralText("Set amount of vibrations during spiriting."))
                         .build())
                 .addEntry(configEntryBuilder
                         .startIntSlider(new LiteralText("Place Block Intensity"),
                                 config.placeBlockIntensity, 0, 100)
-                        .setDefaultValue(100)
+                        .setDefaultValue(Intensities.NORMAL.placeBlock())
                         .setSaveConsumer(pbi -> config.placeBlockIntensity = pbi)
                         .setTooltip(new LiteralText("Set multiplier for vibrations when placing blocks. (Multiplied with block hardness)"))
                         .build());
