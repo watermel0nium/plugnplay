@@ -1,4 +1,4 @@
-package me.vinceh121.minegasm.mixin;
+package io.github.watermel0nium.mixin;
 
 import java.util.function.Supplier;
 
@@ -9,16 +9,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.therainbowville.minegasm.client.ClientEventHandler;
+import io.github.watermel0nium.ClientEventHandler;
 
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.render.WorldRenderer;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 
 @Mixin(ClientWorld.class)
 public class ClientWorldMixins {
