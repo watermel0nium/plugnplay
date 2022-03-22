@@ -13,7 +13,7 @@ Plug n' play is a Minecraft fabric mod for controlling vibes based on [vinceh121
 
 
 ## Usage
-- **Mod Menu** v.3.0.0 or greater in required.
+- **Mod Menu** v.3.0.0 or greater is required.
 
 
 - Run a intiface for buttplug.io on your computer. This is the server which will communicate with your vibes. Here are some options: 
